@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>[[#{errors.403}]]</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <div>
+            <h1>[[#{errors.403}]]</h1>
+            <p> [[#{errors.403.message}]] </p>
+            <a th:href="@{/}"> [[#{accion.regresar}]]</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>[[#{libro.formulario}]]</title>
+        <meta charset="UTF-8"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+
+    </head>
+    <body>
+        
+        <header th:replace="layout/plantilla :: header"></header>
+        <!--<header th:replace="layout/plantilla :: header"></header>-->
+        <div th:replace="layout/plantilla :: navegacionPrincipal"/>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <h2>[[#{libro.formulario}]]</h2>
+                    <form th:action="@{/gestion/guardar}" method="POST" th:object="${libro}">
+                        <div class="form-group">
+                            <input type="hidden" name="id" th:field="*{id}"/>      
+                        </div>
+                        <div class="form-group">
+                            <label for="titulo">[[#{libro.nombre}]]:</label>
+                            <input type="text" name="titulo" th:field="*{titulo}" class="form-control"
+                                   required autofocus="autofocus"/>
+                            <span th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}" class="label label-warning">Error nombre</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="anio">[[#{anio}]]:</label>
+                            <input type="text" name="anio" th:field="*{anio}" class="form-control"
+                                   required autofocus="autofocus"/>
+                            <span th:if="${#fields.hasErrors('anio')}" th:errors="*{anio}" class="label label-warning">Error apellido</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="images">[[#{caratula}]]:</label>
+                            <input type="text" name="images" th:field="*{images}" class="form-control"
+                                   required autofocus="autofocus"/>
+                            <span th:if="${#fields.hasErrors('images')}" th:errors="*{images}" class="label label-warning">Error mail</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cantidad">[[#{disponibles}]]:</label>
+                            <input type="number" name="cantidad" th:field="*{cantidad}" class="form-control"
+                                   required autofocus="autofocus" min="0"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="precio">[[#{precio}]]:</label>
+                            <input step="any" type="number" name="precio" th:field="*{precio}" class="form-control"
+                                   required autofocus="autofocus" min="0.0"/>
+                        </div>
+                        
+                        </br>
+                        
+                        <input class="form-control btn btn-primary" type="submit" name="guardar" th:value="#{accion.guardar}" />
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container ">
+            <a th:href="@{/}">[[#{accion.regresar}]]</a>
+        </div>
+        
+        <footer th:replace="layout/plantilla :: footer"></footer>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+    </body>
+</html>

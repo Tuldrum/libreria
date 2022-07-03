@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>[[#{producto.info}]]</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+    </head>
+    <body>
+                <!--<header th:replace="layout/plantilla :: header"></header>-->
+
+       
+        <header th:replace="layout/plantilla :: header"></header>
+        
+        <div th:replace="layout/plantilla :: navegacionPrincipal"/>
+        
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-6 col-md-offset-3" >
+                    
+                    <h2>[[#{producto.info}]]</h2>
+                    
+                    <div class="card" style="align-self: center" th:with="libro = ${v_item.libroItem}" >
+                        <img style="align-self:center" th:src="${libro.images}" th:width="100" th:height="150" alt="Portada"/>
+                        <h5 class="card-title" th:text="${libro.titulo}"> Mostrar nombre </h5>
+                        
+                        <div class="form-group">
+                            
+                            <label for="anio">[[#{anio}]]:</label>
+                            <input type="text" name="anio" class="form-control" th:value="${libro.anio}" disabled/>
+                            
+                            <label for="cantidad">[[#{disponibles}]]:</label>
+                            <input type="number" name="cantidad" th:value="${libro.cantidad}" class="form-control"
+                                   disabled>
+                            
+                            <label for="precio">[[#{precio}]]:</label>
+                            <input step="any" type="number" name="precio" th:value="${libro.precio}" class="form-control"
+                                   disabled/>
+                        </div>
+                        
+                    </div>
+                  
+                    <form th:action="@{/carrito/guardar}" method="POST" th:object="${v_item}">
+                        <div class="form-group">
+                            <input type="hidden" name="id" th:field="*{id}"/>      
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="libro_item" th:field="*{libroItem}"/>      
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="car_item" th:field="*{carItem}"/>      
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cantidad">[[#{accion.ordenar}]]:</label>
+                            <input type="number" name="cantidad" th:field="*{cantidad}" class="form-control"
+                                   required autofocus="autofocus" min="1" max="${libroItem.cantidad}"/>
+                        </div>
+                        
+                        <br/>
+                        <input class="form-control btn btn-primary" type="submit" name="guardar" th:value="#{accion.ordenar}" />
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container ">
+            <a th:href="@{/}">[[#{accion.regresar}]]</a>
+        </div>
+        
+        <footer th:replace="layout/plantilla :: footer"></footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+    </body>
+</html>

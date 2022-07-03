@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>[[#{carrito}]]</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    <body>
+        
+        <header th:replace="layout/plantilla :: header"></header>
+        
+        <div th:replace="layout/plantilla :: navegacionPrincipal"/>
+        
+        <div class="container col-md-6">
+            <div style='margin-top: 25px; margin-bottom: 20px;'>
+                <span class="alert alert-info" th:if="${v_items!=null or !v_items.isEmpty()}">
+                    [[#{mensaje.carrito}]] <text th:text="${v_user}"/> [[#{mensaje.carrito2}]]
+                </span>
+            </div>
+        </div>
+        
+        <div class="container col-md-6" th:if="${v_items!=null or !v_items.empty}">
+            
+            <div class="table table-responsive">
+                <h1>[[#{carrito}]]</h1>
+                <table class="table table-bordered">
+                    <thead class="thead-dark" >
+                        <tr>
+                            <th scope="col">[[#{caratula}]]</th>
+                            <th scope="col">[[#{libro.nombre}]]</th>
+                            <th scope="col">[[#{precio}]]</th>
+                            <th scope="col">[[#{anio}]]</th>
+                            <th scope="col">[[#{item_info.cantidad}]]</th>
+                            <th scope="col" sec:authorize="hasRole('ROLE_NO ADMIN')">[[#{accion.editar}]]</th>
+                            <th scope="col" sec:authorize="hasRole('ROLE_NO ADMIN')">[[#{accion.eliminar}]]</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="item : ${v_items}">
+                            <div th:with="libro=${item.libroItem}">
+
+                                <td ><img th:src="${libro.images}" th:width="100" th:height="150"/></td>
+                                <td th:text="${libro.titulo}">Mostrar nombre </td>
+                                <td th:text="${libro.precio}">Mostrar apellido </td>
+                                <td th:text="${libro.anio}">Mostrar apellido </td>
+                                <td th:text="${item.cantidad}">Mostrar cantidad</td>
+                                <td sec:authorize="hasRole('ROLE_NO ADMIN')"> 
+                                    <a th:href="@{/carrito/editar/} + ${item.id}"/> [[#{accion.editar}]]
+                                </td>  <!--Path variable  th:text ="#{accion.editar} "-->
+
+                                <td sec:authorize="hasRole('ROLE_NO ADMIN')"> 
+                                    <a th:href="@{/carrito/eliminar(id=${item.id})}" onclick="return confirm('Are you sure to continue with the action?')"/> [[#{accion.eliminar}]]
+                                </td> <!-- QueryParamater  -->
+                            </div> 
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        
+        
+        <div class="container col-md-6" th:if="${v_items!=null or !v_items.isEmpty()}">
+            
+            <div>
+                <span class="alert alert-info" th:if="${v_items==null or v_items.isEmpty()}">
+                    [[#{libros.lista-libros}]]
+                </span>
+            </div>
+            <br/>
+            <div class="form-group" th:if="${v_total != 0}">
+                <label for="Total">[[#{total}]]:</label>
+                <input type="number" name="Total" th:value="${v_total}" class="form-control"
+                       disabled/>
+                <input class="form-control btn btn-primary" type="submit" value="Comprar" disabled/>
+            </div>
+        </div>
+        <div class="container col-md-6">
+            <a th:href="@{/}">[[#{accion.regresar}]]</a>
+        </div>
+        
+        <footer th:replace="layout/plantilla :: footer"></footer> 
+        
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    </body>
+</html>

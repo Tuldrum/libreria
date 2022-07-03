@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>[[#{inicio}]]</title>
+        <meta charset="UTF-8"/>
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    
+    <body>
+        
+        <header th:replace="layout/plantilla :: header"></header>
+        
+        <div th:replace="layout/plantilla :: navegacionPrincipal"/>
+               
+        <div th:if="${libros!=null or !libros.empty}">
+            <div class="container col-md-6">
+                <div class="table table-responsive">
+                    <table class="table table-bordered">
+
+                        <thead class="thead-dark" >
+                            <tr >
+                                <th scope="col">[[#{caratula}]]</th>
+                                <th scope="col">[[#{libro.nombre}]]</th>
+                                <th scope="col">[[#{precio}]]</th>
+                                <th scope="col">[[#{anio}]]</th>
+                                
+                                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">[[#{disponibles}]]</th>
+                                
+                                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">[[#{accion.editar}]]</th>
+                                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">[[#{accion.eliminar}]]</th>
+                                <th scope="col" sec:authorize="hasRole('ROLE_NO ADMIN')">[[#{accion.carrito}]]</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr th:each="libro : ${libros}">
+                                <td ><img th:src="${libro.images}" th:width="100" th:height="150"/></td>
+                                <td th:text="${libro.titulo}">Mostrar nombre </td>
+                                <td th:text="${libro.precio}">Mostrar apellido </td>
+                                <td th:text="${libro.anio}">Mostrar apellido </td>
+
+                                <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${libro.cantidad}">Mostrar apellido </td>
+                                                                
+                                <td sec:authorize="hasRole('ROLE_ADMIN')"> 
+                                    <a th:href="@{/gestion/editar/} + ${libro.id}"/> [[#{accion.editar}]]
+                                </td> 
+                                
+                                <td sec:authorize="hasRole('ROLE_ADMIN')"> 
+                                    <a th:href="@{/gestion/eliminar(id=${libro.id})}" onclick="return confirm('Are you sure to continue with the action?')"/> [[#{accion.eliminar}]]
+                                </td> <!-- QueryParamater  -->
+
+                                <td sec:authorize="hasRole('ROLE_NO ADMIN')">
+                                    <a  th:href="@{/carrito/agregar/} + ${libro.id}" onclick="return confirm('Are you sure to continue with the action?')">Agregar al carrito</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        
+        <span class="alert alert-info" th:if="${libros==null or libros.isEmpty()}">
+            [[#{libros.lista-libros}]]
+        </span>
+        
+        <footer th:replace="layout/plantilla :: footer"></footer> 
+        
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    </body>
+</html>
